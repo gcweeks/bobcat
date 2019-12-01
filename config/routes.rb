@@ -1,3 +1,11 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  scope 'api' do
+    get  '/'    => 'api#index'
+    get  'test' => 'api#request_get'
+    post 'test' => 'api#request_post'
+    get  'feed' => 'api#feed'
+    get  'poll' => 'api#poll'
+  end
+
+  root 'api#index'
 end
