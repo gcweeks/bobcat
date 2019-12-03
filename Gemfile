@@ -25,8 +25,14 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# For serializing returned json
 gem 'active_model_serializers'
+
+# For pagination
 gem 'will_paginate', '~> 3.1.0'
+
+# For Remote VSCode
+gem 'ruby-debug-ide'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
