@@ -3,10 +3,13 @@ class CreateItems < ActiveRecord::Migration[6.0]
     create_table :items do |t|
       t.string :feedlyID
       t.string :title
-      t.string :summary
-      t.string :origin
+      t.string :summaryContent
+      t.string :canonicalUrl
+      t.string :visualUrl
+      t.string :originUrl
+      t.string :originTitle
       t.integer :engagement
-      t.float :rate
+      t.float :engagementRate
       t.integer :published
     end
   end

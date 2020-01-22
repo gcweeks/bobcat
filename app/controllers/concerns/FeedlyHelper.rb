@@ -41,12 +41,15 @@ module FeedlyHelper
         end
       end
       Item.where(feedlyID: item_json['id']).first_or_create(
-        title: item_json['title'],
-        summary: item_json['summary']['content'],
-        origin: item_json['canonicalUrl'],
-        engagement: item_json['engagement'],
-        rate: item_json['engagementRate'],
-        published: item_json['published'],
+        title: item_json.dig('title'),
+        summaryContent: item_json.dig('summary', 'content'),
+        canonicalUrl: item_json.dig('canonicalUrl'),
+        visualUrl: item_json.dig('visual', 'url'),
+        originUrl: item_json.dig('origin', 'htmlUrl'),
+        originTitle: item_json.dig('origin', 'title'),
+        engagement: item_json.dig('engagement'),
+        engagementRate: item_json.dig('engagementRate'),
+        published: item_json.dig('published'),
         tags: tags
       )
     end

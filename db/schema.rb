@@ -15,10 +15,13 @@ ActiveRecord::Schema.define(version: 2019_11_30_194156) do
   create_table "items", force: :cascade do |t|
     t.string "feedlyID"
     t.string "title"
-    t.string "summary"
-    t.string "origin"
+    t.string "summaryContent"
+    t.string "canonicalUrl"
+    t.string "visualUrl"
+    t.string "originUrl"
+    t.string "originTitle"
     t.integer "engagement"
-    t.float "rate"
+    t.float "engagementRate"
     t.integer "published"
   end
 
