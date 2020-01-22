@@ -1,24 +1,36 @@
-# README
+# Bobcat
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+The Rails backend for LynxList
 
-Things you may want to cover:
+## Machine Setup
 
-* Ruby version
+To run this application on an Ubuntu machine, run the following commands:
 
-* System dependencies
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install curl vim apt-transport-https
+curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt install git build-essential apt-transport-https sqlite3 libssl-dev libreadline-dev zlib1g-dev libsqlite3-dev nodejs zip yarn
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+source ~/.bashrc
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer | bash
+rbenv install 2.6.5
+rbenv global 2.6.5
+gem install rails sqlite3 --no-document
+```
 
-* Configuration
+Then clone this repository and enter the main app folder:
 
-* Database creation
+```
+cd bobcat
+bundle
+rails db:migrate
+rails db:reset
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Finally, run the server using `rails s`.
