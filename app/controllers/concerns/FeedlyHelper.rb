@@ -29,6 +29,11 @@ module FeedlyHelper
     http.request(req)
   end
 
+  def self.is_uuid(str)
+    uuid_regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+    uuid_regex.match?(str.to_s.downcase)
+  end
+
   def self.etl(url)
     feed_id = 'feed/' + url
     res = self.get('streams/' + CGI.escape(feed_id) + '/contents')
@@ -37,7 +42,9 @@ module FeedlyHelper
       tags = []
       if item_json['keywords']
         for keyword_str in item_json['keywords']
-          tags.push Tag.where(name: keyword_str).first_or_create
+          unless is_uuid(keyword_str)
+            tags.push Tag.where(name: keyword_str.downcase).first_or_create
+          end
         end
       end
       Item.where(feedlyID: item_json['id']).first_or_create(
