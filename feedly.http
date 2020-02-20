@@ -1,0 +1,10 @@
+@root = https://cloud.feedly.com/v3/
+
+### Get Feed
+GET {{root}}feeds/feed%2Fhttp%3A%2F%2Ffeeds.foxnews.com%2Ffoxnews%2Flatest HTTP/1.1
+
+### Get Stream
+GET {{root}}streams/feed%2Fhttp%3A%2F%2Ffeeds.foxnews.com%2Ffoxnews%2Flatest/contents HTTP/1.1
+
+### Get Entry
+GET {{root}}entries/4i+1vhCwmRRLfmB7ypTnMh+ZKSvsz6Rgf0lfR0WWb0w=_16fcb459f58:26d12fb:31d4c877 HTTP/1.1

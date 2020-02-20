@@ -1,0 +1,35 @@
+@hostname = localhost
+@port = 3000
+@root = http://{{hostname}}:{{port}}/api/
+
+### feed
+GET {{root}}feed
+	?page%5Bnumber%5D=1
+	&page%5Bsize%5D=10
+
+### poll
+GET {{root}}poll
+
+### search
+GET {{root}}search
+Content-Type: application/json
+
+{
+	"s": "a search term"
+}
+
+### test post
+POST {{root}}test
+Content-Type: application/json
+
+{
+	"key1": "value1",
+	"key2": "value2",
+	"key3": "value3"
+}
+
+### test get
+GET {{root}}test
+
+### version
+GET {{root}}
