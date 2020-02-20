@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Rail",
+            "name": "Rails",
             "type": "Ruby",
             "request": "launch",
             "cwd": "${workspaceRoot}",
@@ -14,6 +14,13 @@
                 "server",
                 "-b0"
             ]
-        }
+        },
+        {
+            "name": "Debug Local File",
+            "type": "Ruby",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "program": "${file}"
+        },
     ]
 }
