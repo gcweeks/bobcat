@@ -67,4 +67,26 @@ module FeedlyHelper
       self.etl(url)
     end
   end
+
+  def self.search_tags(query)
+    # Strip non-alphanumeric
+    query = query.gsub(/[^0-9a-z ]/i, '')
+    # Get tag names
+    tags = Tag.all.map(&:name)
+    # Find matches via regex
+    query_reg = /#{query.split('').join('.*?')}/
+    sorted = []
+    tags.each do |string|
+        match = query_reg.match string
+        sorted << {string: string, rank: match.to_s.length} if match
+    end
+    sorted.sort_by! {|x| x[:rank]}
+    matches = sorted.map {|x| x[:string]}
+    matches = matches[0..4]
+    # Find matches via spellcheck
+    spellcheck = DidYouMean::SpellChecker.new(dictionary: tags)
+    matches |= spellcheck.correct(query)
+    matches = matches[0..4]
+    Tag.where(name: matches).all
+  end
 end

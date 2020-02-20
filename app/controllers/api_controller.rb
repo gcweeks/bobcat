@@ -27,4 +27,14 @@ class ApiController < ApplicationController
     FeedlyHelper.poll()
     head :ok
   end
+
+  # GET /search
+  def search
+    tags = FeedlyHelper.search_tags(params[:s])
+    items = Set.new
+    tags.each do |tag|
+      items.add tag.items
+    end
+    render json: items, status: :ok
+  end
 end
