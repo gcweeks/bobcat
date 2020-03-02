@@ -15,7 +15,12 @@ GET {{root}}search
 Content-Type: application/json
 
 {
-	"s": "a search term"
+	"page": {
+		"number": 1,
+		"size": 10
+	},
+	"s": "democrat",
+	"tags": ["bernie sanders", "us news"]
 }
 
 ### test post

@@ -68,25 +68,34 @@ module FeedlyHelper
     end
   end
 
-  def self.search_tags(query)
+  def self.search_items(items, query, start, finish)
+    items = Item.all unless items
     # Strip non-alphanumeric
     query = query.gsub(/[^0-9a-z ]/i, '')
-    # Get tag names
-    tags = Tag.all.map(&:name)
+    # Get search text
+    content_arr = [items.map(&:title), items.map(&:summaryContent)].transpose.map {|x| x.reduce(:+)}
     # Find matches via regex
     query_reg = /#{query.split('').join('.*?')}/
     sorted = []
-    tags.each do |string|
-        match = query_reg.match string
-        sorted << {string: string, rank: match.to_s.length} if match
+    content_arr.each do |string|
+      match = query_reg.match string
+      sorted << {string: string, rank: match.to_s.length} if match
     end
     sorted.sort_by! {|x| x[:rank]}
     matches = sorted.map {|x| x[:string]}
-    matches = matches[0..4]
     # Find matches via spellcheck
-    spellcheck = DidYouMean::SpellChecker.new(dictionary: tags)
+    spellcheck = DidYouMean::SpellChecker.new(dictionary: content_arr)
     matches |= spellcheck.correct(query)
-    matches = matches[0..4]
-    Tag.where(name: matches).all
+    results = []
+    matches.each do |match|
+      items.each do |item|
+        content = item.title + item.summaryContent
+        if content == match
+          results.push(item)
+          break
+        end
+      end
+    end
+    results.sort_by(&:published).reverse[start...finish]
   end
 end

@@ -30,11 +30,13 @@ class ApiController < ApplicationController
 
   # GET /search
   def search
-    tags = FeedlyHelper.search_tags(params[:s])
-    items = Set.new
-    tags.each do |tag|
-      items.add tag.items
-    end
+    page_num = params[:page] && params[:page][:number].to_i || 1
+    page_size = params[:page] && params[:page][:size].to_i || 10
+    items = Tag.where(name: params[:tags]).all.map(&:items)
+    items = items.inject(:&)
+    start = (page_num - 1) * page_size
+    finish = start + page_size
+    items = FeedlyHelper.search_items(items, params[:s], start, finish)
     render json: items, status: :ok
   end
 end
