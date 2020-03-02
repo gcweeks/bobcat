@@ -71,26 +71,16 @@ module FeedlyHelper
   def self.search_items(items, query)
     items = Item.all unless items
     # Strip non-alphanumeric
-    query = query.gsub(/[^0-9a-z ]/i, '')
+    query.downcase!
     # Get search text
     content_arr = [items.map(&:title), items.map(&:summaryContent)].transpose.map {|x| x.reduce(:+)}
-    # Find matches via regex
-    query_reg = /#{query.split('').join('.*?')}/
-    sorted = []
-    content_arr.each do |string|
-      match = query_reg.match string
-      sorted << {string: string, rank: match.to_s.length} if match
-    end
-    sorted.sort_by! {|x| x[:rank]}
-    matches = sorted.map {|x| x[:string]}
-    # Find matches via spellcheck
-    spellcheck = DidYouMean::SpellChecker.new(dictionary: content_arr)
-    matches |= spellcheck.correct(query)
+    # Find substring matches
+    matches = content_arr.map(&:downcase).select { |x| x.include? query }
     results = []
     matches.each do |match|
       items.each do |item|
         content = item.title + item.summaryContent
-        if content == match
+        if content.downcase == match
           results.push(item)
           break
         end
