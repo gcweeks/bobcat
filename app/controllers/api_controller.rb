@@ -32,11 +32,24 @@ class ApiController < ApplicationController
   def search
     page_num = params[:page] && params[:page][:number].to_i || 1
     page_size = params[:page] && params[:page][:size].to_i || 10
-    items = Tag.where(name: params[:tags]).all.map(&:items)
-    items = items.inject(:&)
-    start = (page_num - 1) * page_size
-    finish = start + page_size
-    items = FeedlyHelper.search_items(items, params[:s], start, finish)
+
+    if params[:tags]
+      items = Tag.where(name: params[:tags]).all.map(&:items)
+      items = items.inject(:&)
+    else
+      return head :bad_request unless params[:s]
+    end
+
+    if params[:s]
+      items = FeedlyHelper.search_items(items, params[:s])
+    end
+
+    if items.count > page_size
+      start = (page_num - 1) * page_size
+      finish = start + page_size
+      items = items[start...finish]
+    end
+
     render json: items, status: :ok
   end
 end

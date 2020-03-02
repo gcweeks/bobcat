@@ -68,7 +68,7 @@ module FeedlyHelper
     end
   end
 
-  def self.search_items(items, query, start, finish)
+  def self.search_items(items, query)
     items = Item.all unless items
     # Strip non-alphanumeric
     query = query.gsub(/[^0-9a-z ]/i, '')
@@ -96,6 +96,6 @@ module FeedlyHelper
         end
       end
     end
-    results.sort_by(&:published).reverse[start...finish]
+    results.sort_by(&:published).reverse
   end
 end
