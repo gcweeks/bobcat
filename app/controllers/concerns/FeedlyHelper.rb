@@ -39,11 +39,13 @@ module FeedlyHelper
     res = self.get('streams/' + CGI.escape(feed_id) + '/contents')
     json = JSON.parse(res.body)
     for item_json in json['items']
-      tags = []
+      tags = Set.new
       if item_json['keywords']
         for keyword_str in item_json['keywords']
           unless is_uuid(keyword_str)
-            tags.push Tag.where(name: keyword_str.downcase).first_or_create
+            keyword_str.downcase!
+            keyword_str.gsub!(/[^0-9a-z]/i, '')
+            tags.add Tag.where(name: keyword_str).first_or_create
           end
         end
       end

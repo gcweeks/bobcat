@@ -34,7 +34,8 @@ class ApiController < ApplicationController
     page_size = params[:page] && params[:page][:size].to_i || 10
 
     if params[:tags]
-      items = Tag.where(name: params[:tags]).all.map(&:items).inject(:&)
+      tags = params[:tags].map(&:downcase)
+      items = Tag.where(name: tags).all.map(&:items).inject(:&)
     else
       return head :bad_request unless params[:s]
     end
