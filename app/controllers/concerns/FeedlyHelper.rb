@@ -71,11 +71,15 @@ module FeedlyHelper
   def self.search_items(items, query)
     items = Item.all unless items
     # Strip non-alphanumeric
-    query.downcase!
+    queries = query.downcase.split
     # Get search text
     content_arr = [items.map(&:title), items.map(&:summaryContent)].transpose.map {|x| x.reduce(:+)}
     # Find substring matches
-    matches = content_arr.map(&:downcase).select { |x| x.include? query }
+    match_arrays = []
+    queries.each do |q|
+      match_arrays.push content_arr.map(&:downcase).select { |x| x.include? q }
+    end
+    matches = match_arrays.inject(:&)
     results = []
     matches.each do |match|
       items.each do |item|
