@@ -52,4 +52,23 @@ class ApiController < ApplicationController
 
     render json: items, status: :ok
   end
+
+  # GET /auth
+  def auth
+    access_token = Struct.new(:info, :credentials).new(
+      Struct.new(:email, :name).new(params[:email], params[:name])
+    )
+    user = User.from_omniauth(access_token)
+    user.name = params[:name]
+    unless user.google_token
+      user.google_token = loop do
+        token = SecureRandom.base58(24)
+        break token unless User.exists?(google_token: token)
+      end
+      user.google_refresh_token = SecureRandom.base58(24)
+    end
+    user.save
+
+    render json: user, status: :ok
+  end
 end

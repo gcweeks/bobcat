@@ -31,6 +31,9 @@ gem 'active_model_serializers'
 # For pagination
 gem 'will_paginate', '~> 3.1.0'
 
+# For authentication
+gem 'omniauth-google-oauth2'
+
 # For Remote VSCode
 gem 'ruby-debug-ide'
 gem 'solargraph'

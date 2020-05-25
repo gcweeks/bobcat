@@ -1,17 +1,17 @@
 @hostname = localhost
 @port = 3000
-@root = http://{{hostname}}:{{port}}/api/
+@root = http://{{hostname}}:{{port}}/api
 
 ### feed
-GET {{root}}feed
+GET {{root}}/feed
 	?page%5Bnumber%5D=1
 	&page%5Bsize%5D=10
 
 ### poll
-GET {{root}}poll
+GET {{root}}/poll
 
 ### search
-GET {{root}}search
+GET {{root}}/search
 Content-Type: application/json
 
 {
@@ -24,7 +24,7 @@ Content-Type: application/json
 }
 
 ### test post
-POST {{root}}test
+POST {{root}}/test
 Content-Type: application/json
 
 {
@@ -34,7 +34,19 @@ Content-Type: application/json
 }
 
 ### test get
-GET {{root}}test
+GET {{root}}/test
 
 ### version
-GET {{root}}
+GET {{root}}/
+
+### oauth
+GET http://{{hostname}}:{{port}}/auth/google_oauth2
+
+### [Fake] Auth
+GET {{root}}/auth
+Content-Type: application/json
+
+{
+	"name": "Bobby McTest",
+	"email": "bobby@test.io"
+}
