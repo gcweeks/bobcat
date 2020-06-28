@@ -1,9 +1,10 @@
 @hostname = localhost
 @port = 3000
 @root = http://{{hostname}}:{{port}}/api
+@token = 819tD4T8yj6vik4JuJsPKCqy
 
-### feed
-GET {{root}}/feed
+### front
+GET {{root}}/front
 	?page%5Bnumber%5D=1
 	&page%5Bsize%5D=10
 
@@ -50,3 +51,31 @@ Content-Type: application/json
 	"name": "Bobby McTest",
 	"email": "bobby@test.io"
 }
+
+### Get Me
+GET {{root}}/me
+Authorization: {{token}}
+
+### Update Me
+PUT {{root}}/me
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+	"name": "Bobby McTest",
+	"email": "bobby@test.io"
+}
+
+### Create Feed
+POST {{root}}/feed
+Content-Type: application/json
+Authorization: {{token}}
+
+{
+	"name": "Companies",
+	"query": "snapchat"
+}
+
+### Destroy Feed
+DELETE {{root}}/feed/1
+Authorization: {{token}}

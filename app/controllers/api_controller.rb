@@ -14,8 +14,8 @@ class ApiController < ApplicationController
     render json: { 'body' => "POST Request: #{request.body.read}" }, status: :ok
   end
 
-  # GET /feed
-  def feed
+  # GET /front
+  def front
     page_num = params[:page] && params[:page][:number].to_i || 1
     page_size = params[:page] && params[:page][:size].to_i || 10
     items = Item.limit(page_size).page(page_num).order(published: :desc)

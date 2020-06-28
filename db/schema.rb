@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_17_202311) do
+ActiveRecord::Schema.define(version: 2020_06_28_214709) do
+
+  create_table "feeds", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name"
+    t.string "query"
+    t.index ["user_id"], name: "index_feeds_on_user_id"
+  end
 
   create_table "items", force: :cascade do |t|
     t.string "feedlyID"
@@ -43,4 +50,5 @@ ActiveRecord::Schema.define(version: 2020_05_17_202311) do
     t.string "google_refresh_token"
   end
 
+  add_foreign_key "feeds", "users"
 end
