@@ -71,27 +71,33 @@ module FeedlyHelper
   end
 
   def self.search_items(items, query)
+    # If items not passed in, use all items from database
     items = Item.all unless items
-    # Strip non-alphanumeric
+    # Strip non-alphanumeric and sort into separate words
     queries = query.downcase.split
     # Get search text
-    content_arr = [items.map(&:title), items.map(&:summaryContent)].transpose.map {|x| x.reduce(:+)}
-    # Find substring matches
+    content_pairs = [items.map(&:title), items.map(&:summaryContent)].transpose
+    content_arr = content_pairs.map {|x| x.compact.join(' ')}
+    # Find substring matches per query
     match_arrays = []
     queries.each do |q|
       match_arrays.push content_arr.map(&:downcase).select { |x| x.include? q }
     end
-    matches = match_arrays.inject(:&)
+    # Reduce matches down to ones that matched all query words
+    matches = match_arrays.reduce(:&)
+    # (Slow) Work backwards to find the actual item object we matched
     results = []
     matches.each do |match|
       items.each do |item|
-        content = item.title + item.summaryContent
+        content = [item.title, item.summaryContent].compact.join(' ')
         if content.downcase == match
+          # Found matching item object
           results.push(item)
           break
         end
       end
     end
+    # Sort most-recently-published first
     results.sort_by(&:published).reverse
   end
 end
