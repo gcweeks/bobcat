@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.1'
+gem 'rails', '>= 6.0.3.3'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
@@ -56,4 +56,6 @@ group :development do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+# To ignore warnings about this on non-Windows machines, run the following:
+# "bundle config --local disable_platform_warnings true"
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
