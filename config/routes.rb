@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get  'front'      => 'api#front'
     get  'poll'       => 'api#poll'
     get  'search'     => 'api#search'
+    post 'python'     => 'api#python'
     # Fake
     get  'auth'       => 'api#auth'
     # Authed Requests

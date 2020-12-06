@@ -53,6 +53,13 @@ class ApiController < ApplicationController
     render json: items, status: :ok
   end
 
+  # POST /python
+  def python
+    output, _ = Open3.capture2('python3', 'test.py', params[:text])
+    tags = output.split(' ')
+    render json: { 'body' => tags }, status: :ok
+  end
+
   # GET /auth
   def auth
     access_token = Struct.new(:info, :credentials).new(

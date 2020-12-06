@@ -1,7 +1,8 @@
 @hostname = localhost
 @port = 3000
 @root = http://{{hostname}}:{{port}}/api
-@token = 819tD4T8yj6vik4JuJsPKCqy
+# Replace token below with your user's token
+# @token = AbCdEfGhIjKlMnOpQrStUvWx
 
 ### front
 GET {{root}}/front

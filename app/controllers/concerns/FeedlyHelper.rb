@@ -40,17 +40,16 @@ module FeedlyHelper
     json = JSON.parse(res.body)
     for item_json in json['items']
       tags = Set.new
-      if item_json['keywords']
-        for keyword_str in item_json['keywords']
-          unless is_uuid(keyword_str)
-            keyword_str.downcase!
-            keyword_str.gsub!(/[^0-9a-z]/i, '')
-            tags.add Tag.where(name: keyword_str).first_or_create
-          end
-        end
+      # Convert title into array of nouns, and use that for tags
+      title = item_json.dig('title')
+      nouns, _ = Open3.capture2('python3', 'nouns.py', title)
+      noun_arr = nouns.split(' ')
+      for noun in noun_arr
+        noun.downcase!
+        tags.add Tag.where(name: noun).first_or_create
       end
       Item.where(feedlyID: item_json['id']).first_or_create(
-        title: item_json.dig('title'),
+        title: title,
         summaryContent: item_json.dig('summary', 'content'),
         canonicalUrl: item_json.dig('canonicalUrl'),
         visualUrl: item_json.dig('visual', 'url'),
