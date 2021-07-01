@@ -55,7 +55,7 @@ class ApiController < ApplicationController
 
   # POST /python
   def python
-    output, _ = Open3.capture2('python3', 'test.py', params[:text])
+    output, _ = Open3.capture2('python3', 'nouns.py', params[:text])
     tags = output.split(' ')
     render json: { 'body' => tags }, status: :ok
   end
